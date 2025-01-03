@@ -51,8 +51,8 @@ const LETTER_PARAMS = {
 
 // Update TEXT_PARAMS with Verdana font
 const TEXT_PARAMS = {
-  fontSize: 20,
-  lineHeight: 32,
+  fontSize: 16,
+  lineHeight: 24,
   padding: 40,
   width: Math.min(canvasWidth * 0.8, 900),
   backgroundColor: [0, 0, 0, 240],
@@ -62,7 +62,7 @@ const TEXT_PARAMS = {
   glowColor: [0, 255, 255, 50],
   borderWidth: 2,
   glowBlur: 15,
-  font: 'Verdana'  // Change to Verdana
+  font: 'Verdana'
 };
 
 // Add these global variables at the top
@@ -126,74 +126,27 @@ const DRONE_PARAMS = {
 let modulatorOsc;
 let noiseOsc;
 
-const prompt = `Generate a very short (max 60 words) dating profile in either:
-A) 1st person singular (individual seeking connection) OR
-B) 1st person plural (couple seeking connection)
+const prompt = `Generate a very short (max 60 words) but detailed individual dating profile in 1st person. Focus on perspectives from the Global South and decolonial futures. Set in a future after 2085 when time travel became open source.
 
-Choose ONE format randomly. Focus on perspectives from the Global South and decolonial futures, including sex-positive and diverse relationship styles (polyam, mono, open, etc.). Set in a future after 2085 when time travel became open source.
+Include these SPECIFIC details:
+1. Your exact location with local/indigenous name (e.g., Neo-Abya Yala, Tkaronto-2, Digital Alkebulan)
+2. Your precise role in the new economy (e.g., ancestral code weaver, quantum memory curator, decolonial AI trainer)
+3. Personal details (be specific):
+   - Your exact age/life extensions
+   - Clear gender expression/pronouns
+   - Specific relationship style preferences
+   - Unique body modifications or symbiont relationships
+   - 2-3 particular interests/passions
+4. Exact year for meeting and unique date idea incorporating local elements
 
-Include:
-1. A future location using local/indigenous names
-2. Your role(s) in post-colonial, community-based economic systems
-3. Personal characteristics blending ancestral and future tech, including:
-   - Gender expression(s)
-   - Relationship preferences
-   - Sexual orientation(s)
-   - If couple: how you met/connect
-4. Creative date suggestion including which year to meet
+Must include:
+- At least 2 untranslated words from local languages (with context)
+- Specific cultural practices or traditions
+- Clear relationship intentions
+- Unique personal quirks or characteristics
+- Particular technological augmentations
 
-The future setting includes:
-- Post-colonial recovery and renaissance
-- Indigenous knowledge systems
-- Community-based economies
-- Life extension technology
-- Sustainable living
-- Ancestral-future technologies
-- Time travel accessibility
-- Decolonial practices
-- Diverse relationship styles
-- Body-positive culture
-- Consent-based intimacy
-- Gender fluidity
-- Polyamorous networks
-- Relationship anarchy
-- Ethical non-monogamy
-
-Example elements to draw from:
-- Memory exchanges with ancestors
-- Bio-cultural symbiosis
-- Indigenous futurism
-- Solar-punk festivals
-- Traditional healing + biotech
-- Neural-ancestral connections
-- Interspecies kinship
-- Alternative family structures
-- Decolonial intimacies
-- Local language revival
-- Traditional-future arts
-- Community time banking
-- Sacred sexuality practices
-- Pleasure-positive traditions
-- Consensual tech-enhanced connections
-- Body sovereignty celebrations
-- Intimacy rituals
-- Relationship fluidity
-- Gender expressions
-- Sensual mindfulness
-- Ethical play spaces
-- Consent technology
-- Multi-partner dynamics
-- Queer futurism
-- Trans temporality
-
-For couples, include:
-- How you function as a unit
-- What you're seeking together
-- Your dynamic/connection style
-- Shared interests/practices
-- Individual characteristics
-
-Use some words from local languages (with context). Be creative, sex-positive, and inclusive while avoiding stereotypes. Include gender expressions, sexual orientations, and relationship preferences clearly but tastefully. Keep it concise and respectful.`;
+The profile should feel personal and distinctive, avoiding generic descriptions. Mix ancestral wisdom with future tech in specific ways.`;
 
 // Add error handling constants
 const ERROR_MESSAGES = {
@@ -1529,19 +1482,8 @@ async function chat() {
 
     textToShow = completion.choices[0].message.content;
     
-    // Add helper function to detect if profile is about a couple
-    function isCoupleProfle(text) {
-      return text.toLowerCase().includes('we') || 
-             text.toLowerCase().includes('couple') || 
-             text.toLowerCase().includes('both') ||
-             text.toLowerCase().includes('our') ||
-             text.toLowerCase().includes('us');
-    }
-
-    // Update image generation with conditional prompt
-    const imagePrompt = isCoupleProfle(textToShow) ? 
-      `Create a noir black and white photorealistic closeup of a couple looking directly at camera, Pentax K-3 Mark III Monochrome style. The subjects should be from diverse backgrounds (Global South and/or European with diverse ethnic features - Indigenous, African, Asian, Mixed heritage), any body types, any ages (young adult to elder), any gender expressions. Natural, authentic pose with distinctive styles. Show connection between them. Grainy film texture, high contrast, dramatic indoor lighting. Could be smiling or contemplative. Cyberpunk elements subtle and integrated through minimal tech augmentations, avoid stereotypes. Cinematic portrait lighting emphasizing character and relationship. Based on this profile: ${textToShow}` :
-      `Create a noir black and white photorealistic closeup looking directly at the camera Pentax K-3 Mark III Monochrome style. The subject should be from the Global South and also European with diverse ethnic features (Indigenous, African, Asian, Mixed heritage), any body type (thin, full-figured, athletic), any age (young adult to elder), any gender expression. Natural, authentic pose with cool haircut and distinctive style. Grainy film texture, high contrast, dramatic indoor lighting. Could be smiling or contemplative, looking directly at camera. Cyberpunk elements subtle and integrated through minimal tech augmentations, avoid stereotypes. Cinematic portrait lighting emphasizing character. Based on this profile: ${textToShow}`;
+    // Single image prompt for individual portraits
+    const imagePrompt = `Create a noir black and white photorealistic closeup looking directly at the camera Pentax K-3 Mark III Monochrome style. The subject should be from the Global South and also European with diverse ethnic features (Indigenous, African, Asian, Mixed heritage), any body type (thin, full-figured, athletic), any age (young adult to elder), any gender expression. Natural, authentic pose with cool haircut and distinctive style. Grainy film texture, high contrast, dramatic indoor lighting. Could be smiling or contemplative, looking directly at camera. Cyberpunk elements subtle and integrated through minimal tech augmentations, avoid stereotypes. Cinematic portrait lighting emphasizing character. Based on this profile: ${textToShow}`;
 
     const imageResponse = await openai.images.generate({
       model: "dall-e-3",
