@@ -126,24 +126,74 @@ const DRONE_PARAMS = {
 let modulatorOsc;
 let noiseOsc;
 
-const prompt = `Generate a very short( max 60 words) dating profile in 1st person that emphasizes Global South perspectives and experiences. Include:
-- Location using local/indigenous names (e.g., Tkaronto instead of Toronto, Abya Yala instead of Americas, Nyoongar Boodjar, Alkebulan)
-- Use some words from local languages mixed with English
-- Location in transformed metropolis (focus on cities in Latin America, Africa, Asia, or the Caribbean)
-- Cultural elements and traditions using their original names
-- Relationship styles using local terms for kinship and connection
-- Personal interests that blend ancestral practices (use original names)
-- Your unique career in post-colonial future economies.
-- mix with future tech. Be global as well as local.
-- Include at least 2-3 untranslated words from the local language (with context)
-Set in post-2085 when time travel became open source. Include which year you'd like to meet in. Avoid stereotypes.
+const prompt = `Generate a very short (max 60 words) dating profile in either:
+A) 1st person singular (individual seeking connection) OR
+B) 1st person plural (couple seeking connection)
 
-Example terms to inspire (but use others):
-- Pachamama (Quechua/Aymara - Mother Earth)
-- Ubuntu (Nguni Bantu - human interconnectedness)
-- Sumak Kawsay (Kichwa - good living in harmony)
-- Sawubona (Zulu - "I see you" as greeting)
-- Use similar terms from the region you choose`;
+Choose ONE format randomly. Focus on perspectives from the Global South and decolonial futures, including sex-positive and diverse relationship styles (polyam, mono, open, etc.). Set in a future after 2085 when time travel became open source.
+
+Include:
+1. A future location using local/indigenous names
+2. Your role(s) in post-colonial, community-based economic systems
+3. Personal characteristics blending ancestral and future tech, including:
+   - Gender expression(s)
+   - Relationship preferences
+   - Sexual orientation(s)
+   - If couple: how you met/connect
+4. Creative date suggestion including which year to meet
+
+The future setting includes:
+- Post-colonial recovery and renaissance
+- Indigenous knowledge systems
+- Community-based economies
+- Life extension technology
+- Sustainable living
+- Ancestral-future technologies
+- Time travel accessibility
+- Decolonial practices
+- Diverse relationship styles
+- Body-positive culture
+- Consent-based intimacy
+- Gender fluidity
+- Polyamorous networks
+- Relationship anarchy
+- Ethical non-monogamy
+
+Example elements to draw from:
+- Memory exchanges with ancestors
+- Bio-cultural symbiosis
+- Indigenous futurism
+- Solar-punk festivals
+- Traditional healing + biotech
+- Neural-ancestral connections
+- Interspecies kinship
+- Alternative family structures
+- Decolonial intimacies
+- Local language revival
+- Traditional-future arts
+- Community time banking
+- Sacred sexuality practices
+- Pleasure-positive traditions
+- Consensual tech-enhanced connections
+- Body sovereignty celebrations
+- Intimacy rituals
+- Relationship fluidity
+- Gender expressions
+- Sensual mindfulness
+- Ethical play spaces
+- Consent technology
+- Multi-partner dynamics
+- Queer futurism
+- Trans temporality
+
+For couples, include:
+- How you function as a unit
+- What you're seeking together
+- Your dynamic/connection style
+- Shared interests/practices
+- Individual characteristics
+
+Use some words from local languages (with context). Be creative, sex-positive, and inclusive while avoiding stereotypes. Include gender expressions, sexual orientations, and relationship preferences clearly but tastefully. Keep it concise and respectful.`;
 
 // Add error handling constants
 const ERROR_MESSAGES = {
@@ -1474,13 +1524,26 @@ async function chat() {
 
     textToShow = completion.choices[0].message.content;
     
-    // Generate image
+    // Add helper function to detect if profile is about a couple
+    function isCoupleProfle(text) {
+      return text.toLowerCase().includes('we') || 
+             text.toLowerCase().includes('couple') || 
+             text.toLowerCase().includes('both') ||
+             text.toLowerCase().includes('our') ||
+             text.toLowerCase().includes('us');
+    }
+
+    // Update image generation with conditional prompt
+    const imagePrompt = isCoupleProfle(textToShow) ? 
+      `Create a noir black and white photorealistic closeup of a couple looking directly at camera, Pentax K-3 Mark III Monochrome style. The subjects should be from diverse backgrounds (Global South and/or European with diverse ethnic features - Indigenous, African, Asian, Mixed heritage), any body types, any ages (young adult to elder), any gender expressions. Natural, authentic pose with distinctive styles. Show connection between them. Grainy film texture, high contrast, dramatic indoor lighting. Could be smiling or contemplative. Cyberpunk elements subtle and integrated through minimal tech augmentations, avoid stereotypes. Cinematic portrait lighting emphasizing character and relationship. Based on this profile: ${textToShow}` :
+      `Create a noir black and white photorealistic closeup looking directly at the camera Pentax K-3 Mark III Monochrome style. The subject should be from the Global South and also European with diverse ethnic features (Indigenous, African, Asian, Mixed heritage), any body type (thin, full-figured, athletic), any age (young adult to elder), any gender expression. Natural, authentic pose with cool haircut and distinctive style. Grainy film texture, high contrast, dramatic indoor lighting. Could be smiling or contemplative, looking directly at camera. Cyberpunk elements subtle and integrated through minimal tech augmentations, avoid stereotypes. Cinematic portrait lighting emphasizing character. Based on this profile: ${textToShow}`;
+
     const imageResponse = await openai.images.generate({
       model: "dall-e-3",
-      prompt: "Create a cyberpunk portrait for this dating profile: " + textToShow,
+      prompt: imagePrompt,
       n: 1,
       size: "1024x1024",
-      response_format: "b64_json" // Request base64 instead of URL
+      response_format: "b64_json"
     });
 
     // Create image from base64
