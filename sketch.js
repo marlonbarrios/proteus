@@ -762,29 +762,20 @@ const sketch = p => {
         // First press - start initial generation
         isInitialLoad = false;
         isLoading = true;
-        
-        // Reset all parameters
         resetParameters();
-        
-        // Start loader sound
         startLoaderSound();
-        
         chat();
-      } else if (!isLoading) {  // Only check if not loading
-        // Subsequent presses - trigger new generation
+      } else if (!isLoading) {
         isLoading = true;
-        
-        // Reset all parameters
         resetParameters();
-        
-        // Clear current content
-        textToShow = "";
-        currentImage = null;
-        
-        // Start loader sound
         startLoaderSound();
-        
         chat();
+      }
+    } else if (p.key === 's' || p.key === 'S') {
+      // Save functionality
+      if (currentImage && textToShow) {
+        // Save the current canvas
+        p.saveCanvas('proteus_traveler_' + Date.now(), 'png');
       }
     }
   };
@@ -1438,21 +1429,35 @@ function displayFixedElements(p) {
   const imageSize = Math.min(canvasHeight * 0.8, canvasWidth * 0.4);
   const baseX = (canvasWidth * 0.25) + (imageSize/2) + 50; // Align with text
   
-  // Position elements above text, starting from image top
-  const imageTopY = canvasHeight/2 - imageSize/2; // Top of image
-  let yPos = imageTopY + 40; // Start below text top
+  // Position for instructions in top right
+  const instructionsX = canvasWidth - 40;
+  const instructionsY = 40;
   
-  p.textAlign(p.LEFT, p.TOP);
-  
-  // System indicators with cyan color and enhanced styling
-  p.textSize(14);
-  p.fill(0, 255, 255);
+  // Draw instructions
+  p.textAlign(p.RIGHT, p.TOP);
+  p.textSize(16);
+  const time = p.millis() * 0.001;
+  const pulseAlpha = 200 + Math.sin(time * 2) * 55;
   
   // Add glow effect
   p.drawingContext.shadowBlur = 4;
   p.drawingContext.shadowColor = 'rgba(0, 255, 255, 0.4)';
   
-  const time = p.millis() * 0.001;
+  // Instructions with cyberpunk styling
+  p.fill(0, 255, 255, pulseAlpha);
+  p.text('[ S → SAVE TRAVELER ]', instructionsX, instructionsY);
+  p.text('[ SPACE → OPEN PORTAL ]', instructionsX, instructionsY + 25);
+  
+  // Reset alignment for other elements
+  p.textAlign(p.LEFT, p.TOP);
+  
+  // Position elements above text, starting from image top
+  const imageTopY = canvasHeight/2 - imageSize/2;
+  let yPos = imageTopY + 40;
+  
+  // System indicators with cyan color and enhanced styling
+  p.textSize(14);
+  p.fill(0, 255, 255);
   
   // System version with pulse
   const versionAlpha = 200 + Math.sin(time * 2) * 55;
