@@ -1313,7 +1313,7 @@ function displayLandingPage(p) {
   // Title with wave effect
   p.fill(0, 255, 255);
   p.textSize(64);
-  const titleText = "PRŌTEÚS PORTAL";
+  const titleText = "PRŌTEÚS";
   let xOffset = -p.textWidth(titleText) / 2;
   
   for (let i = 0; i < titleText.length; i++) {
@@ -1326,7 +1326,7 @@ function displayLandingPage(p) {
   p.textSize(28);
   const subtitleAlpha = 200 + Math.sin(time) * 55;
   p.fill(200, subtitleAlpha);
-  p.text("TRANS-TEMPORAL DATING PORTAL", 0, -size * 0.65);
+  p.text("TRANS-TEMPORAL DATING", 0, -size * 0.65);
   
   p.textSize(20);
   const introText = "Connect with time travelers from the future through the Prōteús Portal using Open Source Time Travel Technology.";
@@ -1432,6 +1432,23 @@ function displayFixedElements(p) {
     p.text(symbol, baseX + xOffset, yPos);
     yPos += 20;
   });
+  
+  // Add re-open portal instruction when streaming is complete
+  if (!STREAM_PARAMS.isStreaming && STREAM_PARAMS.currentIndex >= textToShow.length) {
+    p.textSize(18); // Slightly larger text
+    const reOpenAlpha = 200 + Math.sin(time * 2) * 55;
+    p.fill(0, 255, 255, reOpenAlpha);
+    const arrow = Math.sin(time * 4) > 0 ? "→" : "▶";
+    
+    // Position at bottom of all other elements with more spacing
+    yPos += 40; // Add space before the re-open message
+    
+    // Add stronger glow effect
+    p.drawingContext.shadowBlur = 8;
+    p.drawingContext.shadowColor = 'rgba(0, 255, 255, 0.6)';
+    
+    p.text(`[ PRESS SPACE ${arrow} RE-OPEN PORTAL ]`, baseX, yPos);
+  }
   
   p.pop();
 }
