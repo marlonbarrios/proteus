@@ -10,7 +10,8 @@ A **decolonial framework** informs the design and narrative of *Proteus*, challe
 
 ---
 
-<img src="https://github.com/user-attachments/assets/f5929092-e75f-426e-aeea-73d064ea1735" alt="Screenshot 2025-01-04 at 3 42 35 PM" width="700">
+<img src="https://github.com/user-attachments/assets/9da7df98-0cef-435c-b8e9-bd2ef0df5487" alt="Screenshot 2025-01-04 at 3 41 41 PM" width="700">
+
 
 ## Key Concept  
 Profiles on *Proteus* are designed as narratives of potential futures, embracing the radical fluidity of:  
@@ -25,9 +26,11 @@ Each profile speculates how these shifts might manifest, turning every user inte
 
 ---
 
+
 <img src="https://github.com/user-attachments/assets/2fc1efb4-aafd-4e3b-88f1-a1085376896e" alt="Screenshot 2025-01-04 at 3 41 32 PM" width="700">
 
 <img src="https://github.com/user-attachments/assets/6e807ff2-adba-403e-9390-47a665e01517" alt="Screenshot 2025-01-04 at 3 41 41 PM" width="700">
+
 
 ## Features  
 1. **Speculative Profiles**:  
@@ -90,3 +93,5 @@ Check out the live app here: [Proteus: Trans-Temporal Dating App](https://proteu
 ---
 
 Step through. The boundaries of what’s possible await your discovery.
+
+<img src="https://github.com/user-attachments/assets/f5929092-e75f-426e-aeea-73d064ea1735" alt="Screenshot 2025-01-04 at 3 42 35 PM" width="700">
