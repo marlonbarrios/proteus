@@ -65,6 +65,11 @@ Future enhancements for *Proteus* include:
 
 ---
 
+## Licensing and Attribution  
+*Proteus* is published under an **open-source license**. Users and collaborators are encouraged to explore, adapt, and build upon the project, provided proper attribution is given to the creators. If the work is used or exhibited, clear acknowledgment must be made, crediting its original development.  
+
+---
+
 ## Why Proteus?  
 The name references the Greek god Proteus, known for his ability to transform endlessly, a fitting metaphor for a project rooted in the ever-shifting nature of identity and reality.  
 
