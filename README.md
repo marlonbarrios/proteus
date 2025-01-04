@@ -1,7 +1,7 @@
 # Proteus: Trans-Temporal Dating App  
 **“There is someone for you… in the future”**
 
-<img src="https://github.com/user-attachments/assets/2670f0ab-1463-4cdf-ac1a-70d4b9c10157" alt="Screenshot 2025-01-04 at 3 46 18 PM" width="400">
+<img src="https://github.com/user-attachments/assets/2670f0ab-1463-4cdf-ac1a-70d4b9c10157" alt="Screenshot 2025-01-04 at 3 46 18 PM" width="700">
 
 ## Overview  
 *Proteus* is not just a dating app—it’s an art-driven portal into speculative futures. This web art piece invites users to connect with time travelers from eras yet to come, whose profiles reflect fluid and dynamic possibilities of identity, labor, relationships, and embodiment. Each interaction becomes an exploration of how boundaries—genetic, disciplinary, national, relational, and corporeal—might dissolve or transform in a distant, evolving world.
@@ -10,7 +10,7 @@ A **decolonial framework** informs the design and narrative of *Proteus*, challe
 
 ---
 
-<img src="https://github.com/user-attachments/assets/f5929092-e75f-426e-aeea-73d064ea1735" alt="Screenshot 2025-01-04 at 3 42 35 PM" width="400">
+<img src="https://github.com/user-attachments/assets/f5929092-e75f-426e-aeea-73d064ea1735" alt="Screenshot 2025-01-04 at 3 42 35 PM" width="700">
 
 ## Key Concept  
 Profiles on *Proteus* are designed as narratives of potential futures, embracing the radical fluidity of:  
@@ -25,9 +25,9 @@ Each profile speculates how these shifts might manifest, turning every user inte
 
 ---
 
-<img src="https://github.com/user-attachments/assets/2fc1efb4-aafd-4e3b-88f1-a1085376896e" alt="Screenshot 2025-01-04 at 3 41 32 PM" width="400">
+<img src="https://github.com/user-attachments/assets/2fc1efb4-aafd-4e3b-88f1-a1085376896e" alt="Screenshot 2025-01-04 at 3 41 32 PM" width="700">
 
-<img src="https://github.com/user-attachments/assets/6e807ff2-adba-403e-9390-47a665e01517" alt="Screenshot 2025-01-04 at 3 41 41 PM" width="400">
+<img src="https://github.com/user-attachments/assets/6e807ff2-adba-403e-9390-47a665e01517" alt="Screenshot 2025-01-04 at 3 41 41 PM" width="700">
 
 ## Features  
 1. **Speculative Profiles**:  
