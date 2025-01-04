@@ -36,7 +36,9 @@ Each profile speculates how these shifts might manifest, turning every user inte
    - **Visuals**: DALL-E creates corresponding imagery, translating their story into a visual representation that captures their essence.  
 
 2. **Interactive Portals**:  
-   Users press the **space bar** to "open a portal" for a time traveler from the future. The system generates a profile and image, inviting users to explore speculative activities, posthumanist futures, and concepts of a borderless society.  
+   - Users press the **space bar** to "open a portal" for a time traveler from the future. The system generates a profile and image, inviting users to explore speculative activities, posthumanist futures, and concepts of a borderless society.  
+   - Users can **retrigger the generation** by pressing the **space bar** again, creating new characters and profiles.  
+   - The system also allows users to **export the generated sketch as an image** by pressing the **S** key.  
 
 3. **Chained Generative Systems**:  
    - The narrative text directly informs the visual AI prompts, creating cohesive, interdisciplinary portraits that feel simultaneously alien and eerily familiar.  
