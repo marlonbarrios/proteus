@@ -3,6 +3,10 @@
 
 <img src="https://github.com/user-attachments/assets/2670f0ab-1463-4cdf-ac1a-70d4b9c10157" alt="Screenshot 2025-01-04 at 3 46 18 PM" width="700">
 
+## Live App  
+Check out the live app here: [Proteus: Trans-Temporal Dating App](https://proteus-umber.vercel.app/)  
+
+
 ## Overview  
 *Proteus* is not just a dating app—it’s an art-driven portal into speculative futures. This web art piece invites users to connect with time travelers from eras yet to come, whose profiles reflect fluid and dynamic possibilities of identity, labor, relationships, and embodiment. Each interaction becomes an exploration of how boundaries—genetic, disciplinary, national, relational, and corporeal—might dissolve or transform in a distant, evolving world.
 
