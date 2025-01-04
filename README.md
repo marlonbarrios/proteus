@@ -1,12 +1,16 @@
 # Proteus: Trans-Temporal Dating App  
 **“There is someone for you… in the future”**
 
+![Screenshot 2025-01-04 at 3 46 18 PM](https://github.com/user-attachments/assets/2670f0ab-1463-4cdf-ac1a-70d4b9c10157 =400x)
+
 ## Overview  
 *Proteus* is not just a dating app—it’s an art-driven portal into speculative futures. This web art piece invites users to connect with time travelers from eras yet to come, whose profiles reflect fluid and dynamic possibilities of identity, labor, relationships, and embodiment. Each interaction becomes an exploration of how boundaries—genetic, disciplinary, national, relational, and corporeal—might dissolve or transform in a distant, evolving world.
 
 A **decolonial framework** informs the design and narrative of *Proteus*, challenging Eurocentric and hierarchical paradigms of identity, labor, and technology. By foregrounding diverse and non-linear perspectives, it reimagines the future as a space of plurality, mutuality, and fluidity.
 
 ---
+
+![Screenshot 2025-01-04 at 3 42 35 PM](https://github.com/user-attachments/assets/f5929092-e75f-426e-aeea-73d064ea1735 =400x)
 
 ## Key Concept  
 Profiles on *Proteus* are designed as narratives of potential futures, embracing the radical fluidity of:  
@@ -21,6 +25,10 @@ Each profile speculates how these shifts might manifest, turning every user inte
 
 ---
 
+![Screenshot 2025-01-04 at 3 41 32 PM](https://github.com/user-attachments/assets/2fc1efb4-aafd-4e3b-88f1-a1085376896e =400x)
+
+![Screenshot 2025-01-04 at 3 41 41 PM](https://github.com/user-attachments/assets/6e807ff2-adba-403e-9390-47a665e01517 =400x)
+
 ## Features  
 1. **Speculative Profiles**:  
    Time travelers embody a future of boundless possibilities, with their profiles crafted by AI-driven chaining processes:  
@@ -28,7 +36,7 @@ Each profile speculates how these shifts might manifest, turning every user inte
    - **Visuals**: DALL-E creates corresponding imagery, translating their story into a visual representation that captures their essence.  
 
 2. **Interactive Portals**:  
-   Users “open portals” to reveal these characters, discovering stories and forms that challenge perceptions of the present.  
+   Users press the **space bar** to "open a portal" for a time traveler from the future. The system generates a profile and image, inviting users to explore speculative activities, posthumanist futures, and concepts of a borderless society.  
 
 3. **Chained Generative Systems**:  
    - The narrative text directly informs the visual AI prompts, creating cohesive, interdisciplinary portraits that feel simultaneously alien and eerily familiar.  
@@ -42,6 +50,16 @@ Each profile speculates how these shifts might manifest, turning every user inte
 - **AI Pipelines**:  
    - **GPT-4** speculates on the future through layered textual descriptions.  
    - **DALL-E** translates these descriptions into visuals, capturing the fluidity of identity, labor, and form.  
+
+---
+
+## Roadmap  
+Future enhancements for *Proteus* include:  
+1. **Real-Time Interaction**:  
+   - Allow users to communicate directly with time travelers in real time, exploring their thoughts and perspectives dynamically.  
+
+2. **Lip-Sync Animation**:  
+   - Implement real-time lip-sync technology to animate the travelers’ mouths based on the AI-generated responses, creating a more immersive and engaging experience.  
 
 ---
 
