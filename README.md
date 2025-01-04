@@ -10,7 +10,7 @@ A **decolonial framework** informs the design and narrative of *Proteus*, challe
 
 ---
 
-![Screenshot 2025-01-04 at 3 42 35 PM](https://github.com/user-attachments/assets/f5929092-e75f-426e-aeea-73d064ea1735 =400x)
+<img src="https://github.com/user-attachments/assets/f5929092-e75f-426e-aeea-73d064ea1735" alt="Screenshot 2025-01-04 at 3 42 35 PM" width="400">
 
 ## Key Concept  
 Profiles on *Proteus* are designed as narratives of potential futures, embracing the radical fluidity of:  
@@ -25,9 +25,9 @@ Each profile speculates how these shifts might manifest, turning every user inte
 
 ---
 
-![Screenshot 2025-01-04 at 3 41 32 PM](https://github.com/user-attachments/assets/2fc1efb4-aafd-4e3b-88f1-a1085376896e =400x)
+<img src="https://github.com/user-attachments/assets/2fc1efb4-aafd-4e3b-88f1-a1085376896e" alt="Screenshot 2025-01-04 at 3 41 32 PM" width="400">
 
-![Screenshot 2025-01-04 at 3 41 41 PM](https://github.com/user-attachments/assets/6e807ff2-adba-403e-9390-47a665e01517 =400x)
+<img src="https://github.com/user-attachments/assets/6e807ff2-adba-403e-9390-47a665e01517" alt="Screenshot 2025-01-04 at 3 41 41 PM" width="400">
 
 ## Features  
 1. **Speculative Profiles**:  
