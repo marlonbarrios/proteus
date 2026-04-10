@@ -15,6 +15,38 @@ async function postReplicate(body) {
   return data;
 }
 
+/**
+ * FLUX via short `/api/replicate` calls (start + poll) so Vercel Hobby (10s limit) does not 504.
+ * Each poll is a quick GET-style status check; generation runs on Replicate’s side.
+ */
+async function postReplicateImageAndWaitForUrl(prompt) {
+  const start = await postReplicate({
+    action: 'image_start',
+    prompt,
+  });
+  const predictionId = start?.predictionId;
+  if (!predictionId || typeof predictionId !== 'string') {
+    throw new Error('Portrait start failed — no prediction id from server.');
+  }
+  const intervalMs = 1200;
+  const maxAttempts = 100;
+  for (let i = 0; i < maxAttempts; i++) {
+    if (i > 0) {
+      await new Promise((r) => setTimeout(r, intervalMs));
+    }
+    const data = await postReplicate({
+      action: 'image_poll',
+      predictionId,
+    });
+    if (data.status === 'succeeded' && data.url) {
+      return data.url;
+    }
+  }
+  throw new Error(
+    'Portrait image timed out — try again or check Replicate / deployment logs.',
+  );
+}
+
 /** Llama (etc.) token stream via server SSE — see handleReplicateTextStream */
 async function streamReplicateProfileText(prompt, onChunk) {
   const res = await fetch('/api/replicate-stream', {
@@ -24,9 +56,9 @@ async function streamReplicateProfileText(prompt, onChunk) {
       prompt,
       textInput: {
         prompt,
-        max_tokens: 1600,
-        temperature: 0.9,
-        top_p: 0.92,
+        max_tokens: 720,
+        temperature: 0.85,
+        top_p: 0.9,
       },
     }),
   });
@@ -47,6 +79,22 @@ async function streamReplicateProfileText(prompt, onChunk) {
   const decoder = new TextDecoder();
   let carry = '';
 
+  const processSseBlock = (block) => {
+    for (const line of block.split('\n')) {
+      if (!line.startsWith('data: ')) continue;
+      let payload;
+      try {
+        payload = JSON.parse(line.slice(6));
+      } catch {
+        continue;
+      }
+      if (payload.error) throw new Error(payload.error);
+      if (payload.done) return true;
+      if (payload.chunk != null) onChunk(payload.chunk);
+    }
+    return false;
+  };
+
   while (true) {
     const { done, value } = await reader.read();
     if (done) break;
@@ -57,20 +105,17 @@ async function streamReplicateProfileText(prompt, onChunk) {
       if (sep === -1) break;
       const block = carry.slice(0, sep);
       carry = carry.slice(sep + 2);
-
-      for (const line of block.split('\n')) {
-        if (!line.startsWith('data: ')) continue;
-        let payload;
-        try {
-          payload = JSON.parse(line.slice(6));
-        } catch {
-          continue;
-        }
-        if (payload.error) throw new Error(payload.error);
-        if (payload.done) return;
-        if (payload.chunk != null) onChunk(payload.chunk);
-      }
+      if (processSseBlock(block)) return;
     }
+  }
+
+  carry += decoder.decode(new Uint8Array(), { stream: false });
+  for (;;) {
+    const sep = carry.indexOf('\n\n');
+    if (sep === -1) break;
+    const block = carry.slice(0, sep);
+    carry = carry.slice(sep + 2);
+    if (processSseBlock(block)) return;
   }
 }
 let isLoading = false;
@@ -525,7 +570,7 @@ NAME (critical): Invent a **new** name this time — **never** recycle the same 
 
 **Hard rule — say the name once:** Line 1 **starts** with your use-name (one word, or two words only if they are **one** fixed given, e.g. “Mary Jane—”). After line 1, **never** type that name again — not in dialogue, not for emphasis, not mid-sentence. **Do not** repeat any **word** that is part of that name later. From line 2 onward only **I / me / my / we** and specifics.
 
-LENGTH (strict): at most 30 short lines OR under 420 words. Telegraphic sentences. One idea per line. No long paragraphs.
+LENGTH (strict): at most 22 short lines AND under 320 words — then STOP. Telegraphic sentences. One idea per line. No long paragraphs. Do not pad or repeat ideas to fill space.
 
 Cover briefly (1 line each, merge where needed):
 - Line 1: **name once** (see NAME rules) · concrete age (band: **${ageBandSeed}**) · **year (${homeYearSeed} or adjacent)** · where (hint: ${locationSeed})
@@ -1332,7 +1377,7 @@ if (document.readyState === 'complete') {
 
 // Add streaming text parameters
 const STREAM_PARAMS = {
-  /** ms between visible characters — portrait loads in parallel while text reveals */
+  /** Base ms between visible characters; `streamText` speeds up when the model sent a long backlog */
   charDelay: 51,
   currentIndex: 0,
   streamingText: "",
@@ -1386,7 +1431,11 @@ function streamText(p, fullText, x, y, width) {
     if (noiseOsc) noiseOsc.amp(0, 0.1);
   }
 
-  if (currentTime - STREAM_PARAMS.lastCharTime > STREAM_PARAMS.charDelay) {
+  const backlog = fullText.length - STREAM_PARAMS.currentIndex;
+  const adaptiveDelay =
+    backlog > 900 ? 12 : backlog > 500 ? 18 : backlog > 220 ? 28 : STREAM_PARAMS.charDelay;
+
+  if (currentTime - STREAM_PARAMS.lastCharTime > adaptiveDelay) {
     if (STREAM_PARAMS.currentIndex < fullText.length) {
       STREAM_PARAMS.streamingText += fullText[STREAM_PARAMS.currentIndex];
       STREAM_PARAMS.currentIndex++;
@@ -1426,7 +1475,9 @@ function streamText(p, fullText, x, y, width) {
   p.text('PROFILE', x, y);
 
   const bodyY = y + labelSize * 1.5;
-  const cursor = currentTime % 1000 < 500 ? '_' : '';
+  const stillTyping = STREAM_PARAMS.currentIndex < fullText.length;
+  const cursor =
+    stillTyping && currentTime % 1000 < 500 ? '_' : '';
   const body = STREAM_PARAMS.streamingText + cursor;
 
   p.textSize(TEXT_PARAMS.fontSize);
@@ -1709,16 +1760,15 @@ async function chat() {
 
     awaitingPortraitImage = true;
     try {
-      const { url: imageUrl } = await postReplicate({
-        action: 'image',
-        prompt: imagePrompt,
-      });
+      const imageUrl = await postReplicateImageAndWaitForUrl(imagePrompt);
 
+      // Do not set crossOrigin: Replicate delivery URLs often omit
+      // Access-Control-Allow-Origin; "anonymous" then fails before onload.
       const img = await new Promise((resolve, reject) => {
         const image = new Image();
-        image.crossOrigin = 'anonymous';
         image.onload = () => resolve(image);
-        image.onerror = reject;
+        image.onerror = () =>
+          reject(new Error('Could not load portrait image (network or CORS).'));
         image.src = imageUrl;
       });
 

@@ -51,15 +51,62 @@ export async function handleReplicateRequest(body, env) {
     return { url };
   }
 
+  /**
+   * Start FLUX without blocking — each serverless call stays short (avoids Vercel 504 on Hobby).
+   * Client polls `image_poll` until `succeeded`.
+   */
+  if (action === 'image_start') {
+    const prompt = body?.prompt;
+    if (!prompt || typeof prompt !== 'string') {
+      throw new Error('image_start requires prompt string');
+    }
+    const model =
+      body.imageModel ||
+      env.REPLICATE_IMAGE_MODEL ||
+      'black-forest-labs/flux-2-pro';
+    const baseInput = buildDefaultImageInput(prompt);
+    const input =
+      body.imageInput && typeof body.imageInput === 'object'
+        ? { ...baseInput, ...body.imageInput, prompt }
+        : baseInput;
+    const prediction = await replicate.predictions.create({
+      model,
+      input,
+    });
+    return { predictionId: prediction.id };
+  }
+
+  if (action === 'image_poll') {
+    const predictionId = body?.predictionId;
+    if (!predictionId || typeof predictionId !== 'string') {
+      throw new Error('image_poll requires predictionId string');
+    }
+    const prediction = await replicate.predictions.get(predictionId);
+    if (prediction.status === 'succeeded') {
+      const url = await extractImageUrl(prediction.output);
+      return { status: 'succeeded', url };
+    }
+    if (prediction.status === 'failed' || prediction.status === 'canceled') {
+      const err =
+        typeof prediction.error === 'string'
+          ? prediction.error
+          : prediction.error != null
+            ? JSON.stringify(prediction.error)
+            : 'Image generation failed';
+      throw new Error(err);
+    }
+    return { status: prediction.status };
+  }
+
   throw new Error(`Unknown action: ${action}`);
 }
 
 function buildDefaultTextInput(prompt) {
   return {
     prompt,
-    max_tokens: 1600,
-    temperature: 0.9,
-    top_p: 0.92,
+    max_tokens: 720,
+    temperature: 0.85,
+    top_p: 0.9,
   };
 }
 
@@ -170,7 +217,8 @@ async function extractImageUrl(output) {
   if (output == null) throw new Error('Empty image output');
 
   if (typeof output === 'string') {
-    if (output.startsWith('http')) return output;
+    const s = output.trim();
+    if (s.startsWith('http')) return s;
     throw new Error('Unexpected image output string');
   }
 
@@ -185,6 +233,10 @@ async function extractImageUrl(output) {
       return u && typeof u.then === 'function' ? await u : u;
     }
     if (typeof output.url === 'string') return output.url;
+    if (typeof output.uri === 'string') {
+      const u = output.uri.trim();
+      if (u.startsWith('http')) return u;
+    }
   }
 
   throw new Error('Could not parse image output from Replicate');

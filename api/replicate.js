@@ -1,5 +1,8 @@
 import { handleReplicateRequest } from '../replicate-handlers.js';
 
+/** Vercel: allow long FLUX / Replicate runs (Hobby plan still caps at 10s — upgrade for image gen). */
+export const maxDuration = 300;
+
 async function readJsonBody(req) {
   if (typeof req.body === 'object' && req.body !== null && !Buffer.isBuffer(req.body)) {
     return req.body;

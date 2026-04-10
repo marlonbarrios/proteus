@@ -1,5 +1,8 @@
 import { handleReplicateTextStream } from '../replicate-handlers.js';
 
+/** Vercel: LLM stream can exceed default function timeout on long profiles. */
+export const maxDuration = 300;
+
 async function readJsonBody(req) {
   if (typeof req.body === 'object' && req.body !== null && !Buffer.isBuffer(req.body)) {
     return req.body;

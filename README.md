@@ -68,7 +68,7 @@ Each profile speculates how these shifts might manifest, turning every user inte
 Time travelers embody a future of boundless possibilities, with their profiles crafted by AI-driven chaining processes:  
 - **Text**: Open-source **Meta Llama 3 8B Instruct** on Replicate streams over **SSE** (`/api/replicate-stream`), with **`run()` fallback** if streaming errors; override with `REPLICATE_TEXT_MODEL`
 - **Visuals**: Replicate **FLUX.2 [pro]** (`black-forest-labs/flux-2-pro`, configurable) renders the portrait from the completed profile prompt (still image only; no video step)
-- **Length**: Up to about 30 short lines (~420 words); wrapped text column; `max_tokens` default 1600 (see `sketch.js` / `replicate-handlers.js`)
+- **Length**: Prompt targets ~22 short lines / under 320 words; `max_tokens` default 720 (see `sketch.js` / `replicate-handlers.js`)
 
 ### 2. **Interactive Controls**  
 - **SPACE**: Open a portal to generate new time traveler
@@ -93,7 +93,7 @@ Time travelers embody a future of boundless possibilities, with their profiles c
 ## Technical Implementation  
 - **Vite**: Fast development and build system for modern web apps
 - **p5.js**: Creative coding framework for interactive animations and visual effects
-- **Replicate API**: Text streams through `POST /api/replicate-stream` (SSE); image + health ping use `POST /api/replicate` (Vite dev middleware + `api/*.js` on Vercel)
+- **Replicate API**: Text streams through `POST /api/replicate-stream` (SSE); health ping and **async FLUX** (`image_start` → `image_poll` loops on the client) use `POST /api/replicate` so each serverless invocation stays short and **Vercel Hobby avoids 504** on long image runs (Vite dev middleware + `api/*.js` on Vercel)
 - **Responsive Design**: CSS and JavaScript for liquid, adaptive layouts
 - **Real-time Interaction**: Dynamic language switching and generation controls
 
